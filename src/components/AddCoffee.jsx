@@ -1,5 +1,7 @@
 import React from "react";
-import { data } from "react-router";
+
+import { Link } from "react-router";
+import Swal from "sweetalert2";
 
 const AddCoffee = () => {
   const handleSubmit = (e) => {
@@ -7,18 +9,18 @@ const AddCoffee = () => {
 
     const form = e.target;
     const name = form.coffee.value;
-    const chef = form.coffeeChef.value;
+    const quantity = form.quantity.value;
     const supplier = form.coffeeSupplier.value;
     const test = form.test.value;
-    const category = form.category.value;
+    const price = form.price.value;
     const details = form.details.value;
     const photoUrl = form.photoUrl.value;
     const newCoffee = {
       name,
-      chef,
+      quantity,
       supplier,
       test,
-      category,
+      price,
       details,
       photoUrl,
     };
@@ -32,8 +34,14 @@ const AddCoffee = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.acknowledged.true) {
-          form.reset();
+        if (data.insertedId) {
+          Swal.fire({
+            position: "top-center",
+            icon: "success",
+            title: "Coffee added successfully",
+            showConfirmButton: false,
+            timer: 1000,
+          });
         }
         console.log(data);
       });
@@ -42,10 +50,15 @@ const AddCoffee = () => {
   return (
     <div className=" min-h-screen p-10">
       {/* Main content */}
-      <div className="max-w-4xl mx-auto bg-[#F4F3F0] shadow-md rounded-lg p-10">
-        <p className="text-left text-sm font-medium text-gray-600 mb-5 cursor-pointer">
+      <div className="max-w-4xl mx-auto bg-[#F4F3F0]  rounded-lg p-10">
+        <Link
+          className="text-left text-sm font-medium text-gray-600 mb-5 cursor-pointer"
+          to="/"
+        >
+          {" "}
           ← Back to home
-        </p>
+        </Link>
+
         <div className="text-center mb-8">
           <h1 className="text-4xl font-semibold mb-4 text-[#374151]">
             Add New Coffee
@@ -76,11 +89,13 @@ const AddCoffee = () => {
 
           {/* Chef */}
           <div>
-            <label className="block font-medium mb-1 text-gray-700">Chef</label>
+            <label className="block font-medium mb-1 text-gray-700">
+              Quantity
+            </label>
             <input
               type="text"
-              name="coffeeChef"
-              placeholder="Enter coffee chef"
+              name="quantity"
+              placeholder="Enter coffee quantity "
               className="w-full border border-gray-300 rounded-md p-3 outline-none"
             />
           </div>
@@ -114,12 +129,12 @@ const AddCoffee = () => {
           {/* Category */}
           <div>
             <label className="block font-medium mb-1 text-gray-700">
-              Category
+              Price
             </label>
             <input
               type="text"
-              name="category"
-              placeholder="Enter coffee category"
+              name="price"
+              placeholder="Enter coffee price"
               className="w-full border border-gray-300 rounded-md p-3 outline-none"
             />
           </div>
